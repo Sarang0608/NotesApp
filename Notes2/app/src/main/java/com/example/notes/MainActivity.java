@@ -1,5 +1,10 @@
 package com.example.notes;
 
+/***************************************************************************************************************************************************************************************************
+                                                         THIS APP WAS MADE BY THE RUNTIME TERROR: SARANG, JOHNSON,SHRISHAILYA,ROHIT
+                                                THIS ACTIVITY HANDLES THE NAVIGATION DRAWER AND IS THE MAIN CONTAINER FOR ALL THE FRAGMENTS IN THE APP
+ **************************************************************************************************************************************************************************************************/
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,15 +14,20 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FirebaseAuth.AuthStateListener {
 
     private DrawerLayout drawerLayout;
+    private long backPressedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new HomeFragment()).commit();
         navigationView.setCheckedItem(R.id.nav_home);}
 
+
     }
 
     //Definition of ItemSelection method
@@ -57,16 +68,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HomeFragment()).commit();
+                        new HomeFragment()).addToBackStack(null).commit();
                 break;
             case R.id.nav_all_notes:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new AllNotesFragment()).commit();
+                        new AllNotesFragment()).addToBackStack(null).commit();
                 break;
             case R.id.nav_search:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SearchFragment()).commit();
+                        new SearchFragment()).addToBackStack(null).commit();
                 break;
+            case R.id.nav_profile:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ProfileFragment()).addToBackStack(null).commit();
+                break;
+                
             case R.id.nav_settings:
                 Intent settingsIntent = new Intent(MainActivity.this,SettingsActivity.class);
                 startActivity(settingsIntent);
@@ -91,8 +107,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     drawerLayout.closeDrawer(GravityCompat.START);
         }
         else {
+
             super.onBackPressed();
+
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().addAuthStateListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseAuth.getInstance().removeAuthStateListener(this);
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+        if (firebaseAuth.getCurrentUser() == null) {
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+            this.finish();
+        }
+
+    }
 }

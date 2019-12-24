@@ -27,4 +27,17 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.0.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-firestore:21.3.1'
+    // FirebaseUI for Cloud Firestore
+    implementation 'com.firebaseui:firebase-ui-firestore:6.2.0'
+
+    // FirebaseUI for Firebase Auth
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
+    implementation 'com.google.firebase:firebase-storage:19.1.0'
+
+    //Dependency for Facebook Login
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
 }
+apply plugin: 'com.google.gms.google-services'

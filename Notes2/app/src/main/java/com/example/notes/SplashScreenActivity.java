@@ -1,5 +1,8 @@
-//This Activity makes the Splash Screen that appears in the beginning for 3 secs.
 package com.example.notes;
+
+/*****************************************************************************************************************************************************************************************************
+                                                THIS ACTIVITY HANDLES THE SPLASH SCREEN (THE SCREEN THAT APPEARS FOR 3 SECONDS BEFORE THE APP STARTS)
+ ****************************************************************************************************************************************************************************************************/
 
 import androidx.appcompat.app.AppCompatActivity;
 

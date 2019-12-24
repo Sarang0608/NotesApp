@@ -6,13 +6,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity"
-    android:background="@android:color/holo_purple">
+    android:background="#fff"
+    android:orientation="vertical">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Settings Activity"
-        android:gravity="center"
-        android:textSize="30sp"/>
+        android:layout_height="wrap_content"
+        android:background="@color/design_default_color_primary"
+        android:id="@+id/settings_toolbar"
+        app:subtitleTextColor="#fff"
+        ></androidx.appcompat.widget.Toolbar>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="75sp"
+        android:elevation="@dimen/cardview_default_elevation"
+        android:layout_marginTop="15sp">
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Notes App Locked"
+            android:textSize="25sp"
+            android:textColor="#000"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/fingerprint_switch"/>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="75sp"
+        android:elevation="@dimen/cardview_default_elevation"
+        android:layout_marginTop="15sp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="App Theme:"
+                android:textColor="#000000"
+                android:gravity="center"
+                android:textSize="25sp"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/theme_spinner"
+                android:layout_gravity="center"
+                android:gravity="center">
+            </Spinner>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="75sp"
+        android:elevation="@dimen/cardview_default_elevation"
+        android:layout_marginTop="15sp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Clear Cache"
+            android:textSize="25sp"/>
+
+
+    </androidx.cardview.widget.CardView>
+
 
 </LinearLayout>
