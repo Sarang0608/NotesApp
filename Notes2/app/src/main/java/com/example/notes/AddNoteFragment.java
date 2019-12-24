@@ -26,12 +26,16 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -50,6 +54,11 @@ public class AddNoteFragment extends Fragment {
 
         int whiteColorValue = Color.WHITE;
 
+        final EditText header = (EditText) view.findViewById(R.id.note_header_et);
+        final EditText body = (EditText) view.findViewById(R.id.note_content_et);
+        ImageView mic = (ImageView) view.findViewById(R.id.mic_img);
+        Button saveBtn = (Button) view.findViewById(R.id.save_btn);
+
         //Adding the custom toolbar(different from the Main Activity)
         Toolbar addNotesToolbar =  (Toolbar) view.findViewById(R.id.add_notes_toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();//Hide the toolbar from Main Activity. Absence of this method will result in two different toolbars being present at the same time
@@ -57,11 +66,12 @@ public class AddNoteFragment extends Fragment {
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        //Just a Test.....
+        /* Code to test the Firebase Firestrore functionality. Please do not alter this comment.
         Map<String,Object> map = new HashMap<>();
-        map.put("Header","Second Note");
-        map.put("Body","This is the second note added.");
+        map.put("Header","Third Note");
+        map.put("Body","This is the third note added.");
         map.put("Time of Creation",new Timestamp(new Date()));
+        map.put("User Created",FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         firestore.collection("notes")
                 .add(map)
@@ -83,10 +93,49 @@ public class AddNoteFragment extends Fragment {
                 });
 
 
+        FirebaseFirestore.getInstance()
+                .collection("notes")
+                .whereEqualTo("Header","Third Note")
+                .whereEqualTo("User Created",FirebaseAuth.getInstance().getCurrentUser().getEmail())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
+                        for(DocumentSnapshot snapshot:snapshotList) {
+
+                            header.setText(snapshot.getString("Header"));
+                            body.setText(snapshot.getString("Body"));
+                        }
+
+                    }
+
+                });
+
+                DocumentReference documentReference = FirebaseFirestore.getInstance()
+                        .collection("notes")
+                        .document("id");
+                Map<String,Object> map = new HashMap<>();
+                map.put("Header","Second Note");
+
+                documentReference.update(map)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getActivity(), "Updated the Doc", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getActivity(), "Cannot Update the Doc", Toast.LENGTH_SHORT).show();
+                            }
+                        });*/
 
 
-        ImageView mic = (ImageView) view.findViewById(R.id.mic_img);
-        Button saveBtn = (Button) view.findViewById(R.id.save_btn);
+
+
 
         //Handles the Speech-to-Text conversion of the App
         mic.setOnClickListener(new View.OnClickListener() {
